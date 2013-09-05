@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+ 
+jar.baseName = 'RaptureHttpLoginApi' 
+ 
+repositories {
+    mavenCentral()
+}
+ 
+dependencies {
+    //Get the jmeter jars from http://mvnrepository.com/artifact/org.apache.jmeter
+	compile 'org.apache.jmeter:ApacheJMeter_core:2.9'
+    compile 'org.apache.jmeter:ApacheJMeter_components:2.9'
+    compile files('C:/RaptureCode/RaptureNew/RaptureAPI/build/libs/RaptureAPI-1.1.1.jar')
+}
+ 
+sourceSets {
+   main {
+      java {
+         srcDir 'src/main/java' 
+      }
+	  //resources contain .properties files for GUI text
+	  resources { 
+         srcDir 'src/main/resources'
+      } 
+   }
+}
+ 
+jar {
+   manifest {
+      attributes 'Implementation-Title': 'Rapture JMeter HTTP API',
+         'Built-By': System.getProperty('user.name'),
+         'Built-Date': new Date(),
+         'Built-JDK': System.getProperty('java.version')
+   }
+}
+
+task copyJar(type: Copy) {
+    from 'build/libs'
+    into 'c:/tools/apache-jmeter-2.9/lib/ext'
+    include '**/*.jar'
+}
